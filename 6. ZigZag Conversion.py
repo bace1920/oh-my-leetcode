@@ -27,13 +27,28 @@ class Solution:
                 # these coordinate on the matrix is empty
                 pass
             else:
-                index = x * groupSize + ((numRows - y - 1 ) if x % 2 else y)
+                index = x * groupSize + ((numRows - y - 1) if x % 2 else y)
                 if index < length:
                     result += s[index]
             i += 1
         return result
 
+    def convertV2(self, s, numRows):
+        if numRows == 1:
+            return s
+        else:
+            result = [''] * numRows
+            currentRow = 0
+            for ch in s:
+                if currentRow == 0:
+                    step = 1
+                elif currentRow == numRows - 1:
+                    step = -1
+                result[currentRow] += ch
+                currentRow += step
+            return ''.join(result)
+
 
 if __name__ == '__main__':
     s = Solution()
-    print(s.convert('PAYPALISHIRING', 3))
+    print(s.convertV2('PAYPALISHIRING', 3))
