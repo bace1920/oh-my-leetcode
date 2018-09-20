@@ -4,14 +4,36 @@ class ListNode(object):
         self.val = x
         self.next = None
 
+
 class Solution(object):
+    def reverseKGroupV2(self, head, k):
+        before = last_last = ListNode(0)
+        before.next = left = right = head
+        while True:
+            count = 0
+            while right is not None and count < k:
+                count += 1
+                right = right.next
+            if count == k:
+                prev, now = left, right
+                for _ in range(k):
+                    nex = prev.next
+                    prev.next = now
+                    now = prev
+                    prev = nex
+                last_last.next = now
+                last_last = left
+                left = right
+            else:
+                return before.next
+
     def reverseKGroup(self, head, k):
         """
         :type head: ListNode
         :type k: int
         :rtype: ListNode
         """
-        if not head or k ==1:
+        if not head or k == 1:
             return head
         new_head = head
         if self.isEnough(new_head, k):
@@ -55,7 +77,7 @@ if __name__ == '__main__':
         now = now.next
 
     solu = Solution()
-    head = solu.reverseKGroup(head, 2)
+    head = solu.reverseKGroupV2(head, 2)
     while head is not None:
         print(head.val)
         head = head.next
