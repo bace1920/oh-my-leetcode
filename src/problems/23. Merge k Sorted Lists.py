@@ -19,13 +19,37 @@ class Solution(object):
                     d[l.val] = [l]
                 else:
                     d[l.val].append(l)
-                l=l.next
+                l = l.next
         for key in sorted(d.iterkeys()):
             for l in d[key]:
                 now.next = l
-                now= now.next
+                now = now.next
         return head.next
-        
-                
 
-        
+    def mergeKListsV2(self, lists):
+        """
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        count = len(lists)
+        if not count:
+            return lists
+        p = 1
+        while p < count:
+            for i in range(0, count - p, p * 2):
+                lists[i] = self.merge2list(lists[i], lists[i + p])
+            p *= 2
+        return lists[0]
+
+    def merge2list(self, l1, l2):
+        head = now = ListNode(0)
+        while l1 and l2:
+            if l1.val < l2.val:
+                now.next = l1
+                l1 = l1.next
+            else:
+                now.next = l2
+                l2 = l2.next
+            now = now.next
+        now.next = l1 if l1 else l2
+        return head.next
