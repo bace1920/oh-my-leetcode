@@ -11,10 +11,10 @@ func main() {
 }
 
 func isMatch(s string, p string) bool {
-	return do(s, p, 0, 0)
+	return doRecursion(s, p, 0, 0)
 }
 
-func do(s string, p string, sl int, pl int) bool {
+func doRecursion(s string, p string, sl int, pl int) bool {
 	slen, plen := len(s), len(p)
 	if pl >= plen && sl >= slen {
 		return true
@@ -25,8 +25,8 @@ func do(s string, p string, sl int, pl int) bool {
 		firstMatch = true
 	}
 	if plen-pl >= 2 && p[pl+1] == '*' {
-		return (firstMatch && do(s, p, sl+1, pl)) || (do(s, p, sl, pl+2))
+		return (firstMatch && doRecursion(s, p, sl+1, pl)) || (doRecursion(s, p, sl, pl+2))
 	} else {
-		return firstMatch && do(s, p, sl+1, pl+1)
+		return firstMatch && doRecursion(s, p, sl+1, pl+1)
 	}
 }
