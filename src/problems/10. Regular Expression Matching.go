@@ -51,11 +51,10 @@ func dp(s string, p string) bool {
 
 	for i := 0; i < slen; i++ {
 		for q := 0; q < plen; q++ {
-			if p[q] == '.' {
-				dp[i+1][q+1] = dp[i][q]
-			} else if p[q] == s[i] {
+			if p[q] == '.' || p[q] == s[i] {
 				dp[i+1][q+1] = dp[i][q]
 			}
+
 			if p[q] == '*' {
 				if p[q-1] != s[i] && p[q-1] != '.' {
 					dp[i+1][q+1] = dp[i+1][q-1]
