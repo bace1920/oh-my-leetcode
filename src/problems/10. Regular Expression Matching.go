@@ -5,9 +5,9 @@ import "fmt"
 func main() {
 	//s := "mississippi"
 	//p := "mis*is*p*."
-	s := "aa"
-	p := "a*"
-	fmt.Println(isMatch(s, p))
+	s := "aab"
+	p := "c*a*b"
+	fmt.Println(dp(s, p))
 }
 
 func isMatch(s string, p string) bool {
@@ -29,4 +29,42 @@ func doRecursion(s string, p string, sl int, pl int) bool {
 	} else {
 		return firstMatch && doRecursion(s, p, sl+1, pl+1)
 	}
+}
+
+func dp(s string, p string) bool {
+	slen, plen := len(s), len(p)
+	if slen == 0 && plen == 0 {
+		return true
+	}
+
+	dp := make([][]bool, slen+1)
+	for i, _ := range dp {
+		dp[i] = make([]bool, plen+1)
+	}
+	dp[0][0] = true
+
+	for i, char := range p {
+		if char == '*' && dp[0][i-1] {
+			dp[0][i+1] = true
+		}
+	}
+
+	for i := 0; i < slen; i++ {
+		for q := 0; q < plen; q++ {
+			if p[q] == '.' {
+				dp[i+1][q+1] = dp[i][q]
+			} else if p[q] == s[i] {
+				dp[i+1][q+1] = dp[i][q]
+			}
+			if p[q] == '*' {
+				if p[q-1] != s[i] && p[q-1] != '.' {
+					dp[i+1][q+1] = dp[i+1][q-1]
+				} else {
+					dp[i+1][q+1] = dp[i+1][q] || dp[i][q+1] || dp[i+1][q-1]
+				}
+			}
+		}
+	}
+
+	return dp[slen][plen]
 }
