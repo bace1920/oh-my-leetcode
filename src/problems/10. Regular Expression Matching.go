@@ -5,8 +5,8 @@ import "fmt"
 func main() {
 	//s := "mississippi"
 	//p := "mis*is*p*."
-	s := "aab"
-	p := "c*a*b"
+	s := "aaa"
+	p := "a*"
 	fmt.Println(dp(s, p))
 }
 
@@ -32,6 +32,9 @@ func doRecursion(s string, p string, sl int, pl int) bool {
 }
 
 func dp(s string, p string) bool {
+	/*
+	 dp[i][q] means if s[:i] match p[:q]
+	 */
 	slen, plen := len(s), len(p)
 	if slen == 0 && plen == 0 {
 		return true
@@ -59,7 +62,7 @@ func dp(s string, p string) bool {
 				if p[q-1] != s[i] && p[q-1] != '.' {
 					dp[i+1][q+1] = dp[i+1][q-1]
 				} else {
-					dp[i+1][q+1] = dp[i+1][q] || dp[i][q+1] || dp[i+1][q-1]
+					dp[i+1][q+1] = dp[i+1][q] /* single a eg. a to a* */ || dp[i][q+1] /* multiple a eg. aaa to a* */ || dp[i+1][q-1] /* empty c eg. to a * */
 				}
 			}
 		}
