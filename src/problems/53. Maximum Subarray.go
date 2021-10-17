@@ -1,53 +1,56 @@
 package main
 
-import (
-	"fmt"
-	"math"
-)
+import "fmt"
 
 func main() {
 	nums := []int{-2, 1, -3, 4, -1, 2, 1, -5, 4}
-	//nums := []int{-2, 1}
-	fmt.Println(maxSubArrayOn(nums))
-}
+	// nums := []int{3, 2, 1, 0, 4}
+	// nums := []int{1, 1}
 
-func maxSubArrayOn(nums []int) int {
-	length := len(nums)
-	dp := make([]int, length)
-	dp[0] = nums[0]
-	for i := 1; i < length; i++ {
-		if dp[i-1] > 0 {
-			dp[i] = dp[i-1] + nums[i]
-		} else {
-			dp[i] = nums[i]
-		}
-	}
-
-	max := dp[0]
-	for _, sum := range dp {
-		if sum > max {
-			max = sum
-		}
-	}
-	return max
+	fmt.Println(maxSubArray(nums))
 }
 
 func maxSubArray(nums []int) int {
-	length := len(nums)
-	maxSum := nums[0]
-	for i := 0; i < length; i++ {
-		sum := foo(nums, length, nums[i], i)
-		if sum > maxSum {
-			maxSum = sum
-		}
-	}
-	return maxSum
+	s, e, max := dc(nums, 0, len(nums))
+	fmt.Println(s, e)
+	return max
 }
 
-func foo(nums []int, length int, sum int, pos int) int {
-	if pos == length-1 {
-		return sum
-	} else {
-		return int(math.Max(float64(sum), float64(foo(nums, length, sum+nums[pos+1], pos+1))))
+// todo
+func dc(nums []int, s, e int) (int, int, int) {
+	fmt.Println(s, e)
+	if s+1 == e {
+		return s, e, nums[s]
 	}
+
+	mid := (s + e) / 2
+	ls, le, lsum := dc(nums, s, mid)
+	rs, re, rsum := dc(nums, mid, e)
+	if le == rs && lsum+rsum >= lsum && lsum+rsum >= rsum {
+		return ls, re, lsum + rsum
+	} else {
+		if lsum > rsum {
+			return ls, le, lsum
+		} else {
+			return rs, re, rsum
+		}
+	}
+}
+
+func maxSubArrayDP(nums []int) int {
+	l := len(nums)
+	iter := nums[0]
+	sum := nums[0]
+	for i := 1; i < l; i++ {
+		iter = max(iter+nums[i], nums[i])
+		sum = max(iter, sum)
+	}
+	return sum
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
