@@ -6,7 +6,7 @@ func main() {
 	// obstacleGrid := [][]int{{0, 0, 0}, {0, 1, 0}, {0, 0, 0}}
 	// obstacleGrid := [][]int{{0, 1}, {0, 0}}
 	// obstacleGrid := [][]int{{0, 0}, {0, 1}}
-	obstacleGrid := [][]int{{1}, }
+	obstacleGrid := [][]int{{1}}
 	fmt.Println(uniquePathsWithObstacles(obstacleGrid))
 }
 
@@ -15,12 +15,7 @@ func uniquePathsWithObstacles(obstacleGrid [][]int) int {
 	width := len(obstacleGrid[0])
 	cur := make([]int, width)
 
-	if obstacleGrid[0][0] == 1 {
-		cur[0] = -1
-	} else {
-
-		cur[0] = 1
-	}
+	cur[0] = 1 + -2*obstacleGrid[0][0] // 1 if 0, -1 if 1
 	for q := 1; q < width; q++ {
 		if obstacleGrid[0][q] == 1 {
 			cur[q] = -1
